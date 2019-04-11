@@ -51,6 +51,16 @@ func viewDidLoad() {
 	super.viewDidLoad()
 	let topViewControllerRelativeToSelf = self.topViewController()
 }
+
+
+// Async version
+
+self.topViewController { viewController in
+    if let viewController =  viewController {
+        // TODO
+    }
+}
+
 ```
 
 ### Objective-C
@@ -66,6 +76,7 @@ UIViewController* const absoluteTopViewController = [[UIApplication sharedApplic
 	[super  viewDidLoad];
 	UIViewController* const topViewControllerRelativeToSelf = [self topViewController];
 }
+
 ```
 
 ## Changelog

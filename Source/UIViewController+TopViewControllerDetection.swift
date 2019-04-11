@@ -11,6 +11,12 @@ fileprivate func findTopViewController(_ base: UIViewController?) -> UIViewContr
         return nil
     }
     
+    #if swift(>=4.2)
+    let children = base.children
+    #else
+    let children = base.childViewControllers
+    #endif
+    
     if let nav = base as? UINavigationController {
         return findTopViewController(nav.visibleViewController)
     }
@@ -22,8 +28,8 @@ fileprivate func findTopViewController(_ base: UIViewController?) -> UIViewContr
     else if let presentedViewController = base.presentedViewController {
         return findTopViewController(presentedViewController);
     }
-    else if base.children.isEmpty == false {
-        if let lastViewController = base.children.reversed().filter({ (vc) -> Bool in
+    else if children.isEmpty == false {
+        if let lastViewController = children.reversed().filter({ (vc) -> Bool in
             return vc.isViewLoaded
                 && (vc.view.isHidden == false)
                 && (vc.view.alpha >= 0.05)
@@ -41,6 +47,33 @@ extension UIViewController {
     @objc
     open func topViewController() -> UIViewController? {
         return findTopViewController(self)
+    }
+    
+    @objc
+    open func topViewController(_ completion: @escaping TopViewControllerDetectionAsyncCompletion) {
+        
+        guard let viewController = findTopViewController(self) else {
+            DispatchQueue.main.async {
+                completion(nil)
+            }
+            return
+        }
+        
+        #if swift(>=4.2)
+        let busy = viewController.isBeingPresented || viewController.isBeingDismissed || viewController.isMovingToParent || viewController.isMovingFromParent
+        #else
+        let busy =  viewController.isBeingPresented || viewController.isBeingDismissed || viewController.isMovingToParentViewController || viewController.isMovingFromParentViewController
+        #endif
+        if busy {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1/60) {
+                self.topViewController(completion)
+            }
+            return
+        }
+        
+        DispatchQueue.main.async {
+            completion(viewController)
+        }
     }
     
 }
