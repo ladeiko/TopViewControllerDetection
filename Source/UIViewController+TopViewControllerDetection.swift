@@ -5,7 +5,9 @@
 //  Copyright © 2019 Siarhei Ladzeika. All rights reserved.
 //
 
-fileprivate func findTopViewController(_ base: UIViewController?) -> UIViewController? {
+import UIKit
+
+fileprivate func _findTopViewController(_ base: UIViewController?) -> UIViewController? {
     
     guard let base = base else {
         return nil
@@ -18,15 +20,15 @@ fileprivate func findTopViewController(_ base: UIViewController?) -> UIViewContr
     #endif
     
     if let nav = base as? UINavigationController {
-        return findTopViewController(nav.visibleViewController)
+        return _findTopViewController(nav.visibleViewController)
     }
     else if let tab = base as? UITabBarController {
         if let selectedViewController = tab.selectedViewController {
-            return findTopViewController(selectedViewController)
+            return _findTopViewController(selectedViewController)
         }
     }
     else if let presentedViewController = base.presentedViewController {
-        return findTopViewController(presentedViewController);
+        return _findTopViewController(presentedViewController);
     }
     else if children.isEmpty == false {
         if let lastViewController = children.reversed().filter({ (vc) -> Bool in
@@ -35,7 +37,7 @@ fileprivate func findTopViewController(_ base: UIViewController?) -> UIViewContr
                 && (vc.view.alpha >= 0.05)
                 && (base.view.bounds == vc.view.frame)
         }).first {
-            return findTopViewController(lastViewController);
+            return _findTopViewController(lastViewController);
         }
     }
     
@@ -45,14 +47,14 @@ fileprivate func findTopViewController(_ base: UIViewController?) -> UIViewContr
 extension UIViewController {
 
     @objc
-    open func topViewController() -> UIViewController? {
-        return findTopViewController(self)
+    open func findTopViewController() -> UIViewController? {
+        return _findTopViewController(self)
     }
     
     @objc
-    open func topViewController(_ completion: @escaping TopViewControllerDetectionAsyncCompletion) {
+    open func findTopViewController(_ completion: @escaping TopViewControllerDetectionAsyncCompletion) {
         
-        guard let viewController = findTopViewController(self) else {
+        guard let viewController = _findTopViewController(self) else {
             DispatchQueue.main.async {
                 completion(nil)
             }
@@ -66,7 +68,7 @@ extension UIViewController {
         #endif
         if busy {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1/60) {
-                self.topViewController(completion)
+                self.findTopViewController(completion)
             }
             return
         }

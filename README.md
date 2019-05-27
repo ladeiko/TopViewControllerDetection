@@ -45,17 +45,17 @@ See [SwiftExample.swift](TopViewControllerDemo/TopViewControllerDemo/Examples/Sw
 ``` swift
 import TopViewControllerDetection
 
-let absoluteTopViewController = UIApplication.shared.topViewController()
+let absoluteTopViewController = UIApplication.shared.findTopViewController()
 
 func viewDidLoad() {
 	super.viewDidLoad()
-	let topViewControllerRelativeToSelf = self.topViewController()
+	let topViewControllerRelativeToSelf = self.findTopViewController()
 }
 
 
 // Async version
 
-self.topViewController { viewController in
+self.findTopViewController { viewController in
     if let viewController =  viewController {
         // TODO
     }
@@ -70,11 +70,11 @@ See [ObjCExample.m](TopViewControllerDemo/TopViewControllerDemo/Examples/ObjCExa
 ```objective-c
 @import TopViewControllerDetection;
 
-UIViewController* const absoluteTopViewController = [[UIApplication sharedApplication] topViewController];
+UIViewController* const absoluteTopViewController = [[UIApplication sharedApplication] findTopViewController];
 
 - (void)viewDidLoad {
 	[super  viewDidLoad];
-	UIViewController* const topViewControllerRelativeToSelf = [self topViewController];
+	UIViewController* const topViewControllerRelativeToSelf = [self findTopViewController];
 }
 
 ```

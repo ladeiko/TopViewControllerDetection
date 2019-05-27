@@ -12,7 +12,7 @@
 @implementation NSObject(ObjCExample)
 
 + (void)example {
-    UIViewController* const viewController = [[UIApplication sharedApplication] topViewController];
+    UIViewController* const viewController = [[UIApplication sharedApplication] findTopViewController];
 }
 
 @end

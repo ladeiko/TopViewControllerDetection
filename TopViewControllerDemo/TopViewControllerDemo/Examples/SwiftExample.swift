@@ -12,7 +12,7 @@ import TopViewControllerDetection
 extension NSObject {
     
     func swiftExample() {
-        let viewController = UIApplication.shared.topViewController()
+        let viewController = UIApplication.shared.findTopViewController()
     }
     
 }

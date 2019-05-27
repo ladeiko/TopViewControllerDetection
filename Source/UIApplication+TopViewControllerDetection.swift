@@ -10,13 +10,13 @@ public typealias TopViewControllerDetectionAsyncCompletion = (_ viewController: 
 extension UIApplication {
 
     @objc
-    open func topViewController() -> UIViewController? {
-        return self.keyWindow?.rootViewController?.topViewController()
+    open func findTopViewController() -> UIViewController? {
+        return self.keyWindow?.rootViewController?.findTopViewController()
     }
     
     @objc
-    open func topViewController(_ completion: @escaping TopViewControllerDetectionAsyncCompletion) {
-        self.keyWindow?.rootViewController?.topViewController(completion)
+    open func findTopViewController(_ completion: @escaping TopViewControllerDetectionAsyncCompletion) {
+        self.keyWindow?.rootViewController?.findTopViewController(completion)
     }
     
 }

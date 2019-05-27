@@ -37,7 +37,7 @@ class TopViewControllerDemoTests: XCTestCase {
         
         XCTAssert(UIApplication.shared.keyWindow != nil)
         
-        XCTAssert(UIApplication.shared.topViewController() == UIApplication.shared.keyWindow?.rootViewController);
+        XCTAssert(UIApplication.shared.findTopViewController() == UIApplication.shared.keyWindow?.rootViewController);
     }
     
     func test_PresentedViewController() {
@@ -55,7 +55,7 @@ class TopViewControllerDemoTests: XCTestCase {
             })
         }
         
-        XCTAssert(UIApplication.shared.topViewController() == root);
+        XCTAssert(UIApplication.shared.findTopViewController() == root);
     }
     
     func test_UINavigationViewController() {
@@ -69,7 +69,7 @@ class TopViewControllerDemoTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = nav
         
-        XCTAssert(UIApplication.shared.topViewController() == root);
+        XCTAssert(UIApplication.shared.findTopViewController() == root);
     }
     
     func test_UITabBarController() {
@@ -87,7 +87,7 @@ class TopViewControllerDemoTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = tab
         
-        XCTAssert(UIApplication.shared.topViewController() == tab2);
+        XCTAssert(UIApplication.shared.findTopViewController() == tab2);
     }
     
     func test_Child_UIViewController_Latest() {
@@ -116,7 +116,7 @@ class TopViewControllerDemoTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = parent
         
-        XCTAssert(UIApplication.shared.topViewController() == child3);
+        XCTAssert(UIApplication.shared.findTopViewController() == child3);
     }
     
     func test_Child_UIViewController_Hidden() {
@@ -147,7 +147,7 @@ class TopViewControllerDemoTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = parent
         
-        XCTAssert(UIApplication.shared.topViewController() == child2);
+        XCTAssert(UIApplication.shared.findTopViewController() == child2);
     }
     
     func test_Child_UIViewController_Alpha() {
@@ -178,7 +178,7 @@ class TopViewControllerDemoTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = parent
         
-        XCTAssert(UIApplication.shared.topViewController() == child2);
+        XCTAssert(UIApplication.shared.findTopViewController() == child2);
     }
     
     func test_Child_UIViewController_Frame() {
@@ -209,7 +209,7 @@ class TopViewControllerDemoTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = parent
         
-        XCTAssert(UIApplication.shared.topViewController() == child2);
+        XCTAssert(UIApplication.shared.findTopViewController() == child2);
     }
     
 }
