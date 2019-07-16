@@ -7,6 +7,22 @@
 
 import UIKit
 
+fileprivate func hasSameSize(_ view: UIView) -> Bool {
+    
+    var next: UIView? = view
+    
+    while next != nil && next!.superview != nil {
+        
+        if next!.superview!.bounds != next!.frame {
+            return false
+        }
+        
+        next = next!.superview
+    }
+    
+    return true
+}
+
 fileprivate func _findTopViewController(_ base: UIViewController?) -> UIViewController? {
     
     guard let base = base else {
@@ -35,7 +51,7 @@ fileprivate func _findTopViewController(_ base: UIViewController?) -> UIViewCont
             return vc.isViewLoaded
                 && (vc.view.isHidden == false)
                 && (vc.view.alpha >= 0.05)
-                && (base.view.bounds == vc.view.frame)
+                && (hasSameSize(vc.view))
         }).first {
             return _findTopViewController(lastViewController);
         }
