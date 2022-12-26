@@ -7,6 +7,7 @@
 
 import UIKit
 
+@MainActor
 fileprivate func hasSameSize(_ view: UIView) -> Bool {
     
     var next: UIView? = view
@@ -23,6 +24,7 @@ fileprivate func hasSameSize(_ view: UIView) -> Bool {
     return true
 }
 
+@MainActor
 fileprivate func _findTopViewController(_ base: UIViewController?) -> UIViewController? {
     
     guard let base = base else {
@@ -62,12 +64,12 @@ fileprivate func _findTopViewController(_ base: UIViewController?) -> UIViewCont
         
 extension UIViewController {
 
-    @objc
+    @MainActor @objc @discardableResult
     open func findTopViewController() -> UIViewController? {
         return _findTopViewController(self)
     }
     
-    @objc
+    @MainActor @objc
     open func findTopViewController(_ completion: @escaping TopViewControllerDetectionAsyncCompletion) {
         
         guard let viewController = _findTopViewController(self) else {
@@ -92,6 +94,15 @@ extension UIViewController {
         DispatchQueue.main.async {
             completion(viewController)
         }
+    }
+
+    @MainActor
+    public func findTopViewController() async -> UIViewController? {
+        return await withCheckedContinuation({ continuation in
+            findTopViewController { viewController in
+                continuation.resume(returning: viewController)
+            }
+        })
     }
     
 }

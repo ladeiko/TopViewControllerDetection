@@ -5,18 +5,30 @@
 //  Copyright © 2019 Siarhei Ladzeika. All rights reserved.
 //
 
-public typealias TopViewControllerDetectionAsyncCompletion = (_ viewController: UIViewController?) -> Void
+public typealias TopViewControllerDetectionAsyncCompletion = @MainActor (_ viewController: UIViewController?) -> Void
         
 extension UIApplication {
 
-    @objc
+    @MainActor @objc @discardableResult
     open func findTopViewController() -> UIViewController? {
-        return self.keyWindow?.rootViewController?.findTopViewController()
+        return keyWindow?.rootViewController?.findTopViewController()
     }
     
-    @objc
+    @MainActor @objc
     open func findTopViewController(_ completion: @escaping TopViewControllerDetectionAsyncCompletion) {
-        self.keyWindow?.rootViewController?.findTopViewController(completion)
+        guard let keyWindow = self.keyWindow else {
+            return DispatchQueue.main.async { completion(nil) }
+        }
+        keyWindow.rootViewController?.findTopViewController(completion)
+    }
+
+    @MainActor
+    public func findTopViewController() async -> UIViewController? {
+        return await withCheckedContinuation({ continuation in
+            findTopViewController { viewController in
+                continuation.resume(returning: viewController)
+            }
+        })
     }
     
 }
