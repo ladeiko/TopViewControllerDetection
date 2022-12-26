@@ -23,7 +23,7 @@ extension UIApplication {
     }
 
     @MainActor
-    public func findTopViewController() async -> UIViewController? {
+    public func findTopViewControllerAsync() async -> UIViewController? {
         return await withCheckedContinuation({ continuation in
             findTopViewController { viewController in
                 continuation.resume(returning: viewController)
