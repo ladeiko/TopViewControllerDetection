@@ -5,6 +5,8 @@
 //  Copyright © 2019 Siarhei Ladzeika. All rights reserved.
 //
 
+import UIKit
+
 public typealias TopViewControllerDetectionAsyncCompletion = @MainActor (_ viewController: UIViewController?) -> Void
         
 extension UIApplication {
